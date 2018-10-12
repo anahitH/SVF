@@ -289,22 +289,30 @@ void SVFG::connectDirectSVFGEdges() {
             if(isa<AddrSVFGNode>(stmtNode))
                 continue;
             /// for all other cases, like copy/gep/load/ret, connect the RHS pointer to its def
-            addIntraDirectVFEdge(getDef(stmtNode->getPAGSrcNode()),nodeId);
+            if (hasDef(stmtNode->getPAGSrcNode())) {
+                addIntraDirectVFEdge(getDef(stmtNode->getPAGSrcNode()),nodeId);
+            }
 
             /// for store, connect the RHS/LHS pointer to its def
             if(isa<StoreSVFGNode>(stmtNode)) {
-                addIntraDirectVFEdge(getDef(stmtNode->getPAGDstNode()),nodeId);
+                if (hasDef(stmtNode->getPAGDstNode())) {
+                    addIntraDirectVFEdge(getDef(stmtNode->getPAGDstNode()),nodeId);
+                }
             }
 
         }
         else if(const PHISVFGNode* phiNode = dyn_cast<PHISVFGNode>(node)) {
             for (PHISVFGNode::OPVers::const_iterator it = phiNode->opVerBegin(), eit = phiNode->opVerEnd();
                     it != eit; it++) {
-                addIntraDirectVFEdge(getDef(it->second),nodeId);
+                if (hasDef(it->second)) {
+                    addIntraDirectVFEdge(getDef(it->second),nodeId);
+                }
             }
         }
         else if(const ActualParmSVFGNode* actualParm = dyn_cast<ActualParmSVFGNode>(node)) {
-            addIntraDirectVFEdge(getDef(actualParm->getParam()),nodeId);
+            if (hasDef(actualParm->getParam())) {
+                    addIntraDirectVFEdge(getDef(actualParm->getParam()),nodeId);
+            }
         }
         else if(const FormalParmSVFGNode* formalParm = dyn_cast<FormalParmSVFGNode>(node)) {
             for(CallPESet::const_iterator it = formalParm->callPEBegin(), eit = formalParm->callPEEnd();
@@ -317,8 +325,9 @@ void SVFG::connectDirectSVFGEdges() {
         }
         else if(const FormalRetSVFGNode* calleeRet = dyn_cast<FormalRetSVFGNode>(node)) {
             /// connect formal ret to its definition node
-            addIntraDirectVFEdge(getDef(calleeRet->getRet()), nodeId);
-
+            if (hasDef(calleeRet->getRet())) {
+                    addIntraDirectVFEdge(getDef(calleeRet->getRet()), nodeId);
+            }
             /// connect formal ret to actual ret
             for(RetPESet::const_iterator it = calleeRet->retPEBegin(), eit = calleeRet->retPEEnd();
                     it!=eit; ++it) {
@@ -346,6 +355,9 @@ void SVFG::connectDirectSVFGEdges() {
     for (PAGEdge::PAGEdgeSetTy::iterator iter = joins.begin(), eiter =
                 joins.end(); iter != eiter; ++iter) {
         TDJoinPE* joinedge = cast<TDJoinPE>(*iter);
+        if (!hasDef(joinedge->getDstNode())) {
+            continue;
+        }
         NodeID callsiteRev = getDef(joinedge->getDstNode());
         const FormalRetSVFGNode* calleeRet = getFormalRetSVFGNode(joinedge->getSrcNode());
         addRetDirectVFEdge(calleeRet->getId(),callsiteRev, getCallSiteID(joinedge->getCallSite(), calleeRet->getFun()));

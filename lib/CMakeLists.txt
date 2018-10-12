@@ -50,6 +50,8 @@ set(SVF_SOURCES
     WPA/FlowSensitiveStat.cpp
     WPA/TypeAnalysis.cpp
     WPA/WPAPass.cpp
+    PDG/PDGBuilder.cpp
+    PDG/PDGPointerAnalysis.cpp
     )
 
 add_llvm_loadable_module(Svf ${SVF_SOURCES})

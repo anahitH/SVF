@@ -41,7 +41,7 @@ class SVFModule;
  *  PAG Builder
  */
 class PAGBuilder: public llvm::InstVisitor<PAGBuilder> {
-private:
+protected:
     PAG* pag;
     SVFModule svfMod;
 public:
@@ -128,59 +128,59 @@ public:
     //@{
     // Instructions that cannot be folded away.
     virtual void visitAllocaInst(llvm::AllocaInst &AI);
-    void visitPHINode(llvm::PHINode &I);
-    void visitStoreInst(llvm::StoreInst &I);
-    void visitLoadInst(llvm::LoadInst &I);
-    void visitGetElementPtrInst(llvm::GetElementPtrInst &I);
-    void visitCallInst(llvm::CallInst &I) {
+    virtual void visitPHINode(llvm::PHINode &I);
+    virtual void visitStoreInst(llvm::StoreInst &I);
+    virtual void visitLoadInst(llvm::LoadInst &I);
+    virtual void visitGetElementPtrInst(llvm::GetElementPtrInst &I);
+    virtual void visitCallInst(llvm::CallInst &I) {
         visitCallSite(&I);
     }
-    void visitInvokeInst(llvm::InvokeInst &II) {
+    virtual void visitInvokeInst(llvm::InvokeInst &II) {
         visitCallSite(&II);
         visitTerminatorInst(II);
     }
-    void visitCallSite(llvm::CallSite cs);
-    void visitReturnInst(llvm::ReturnInst &I);
-    void visitCastInst(llvm::CastInst &I);
-    void visitSelectInst(llvm::SelectInst &I);
-    void visitIntToPtrInst(llvm::IntToPtrInst &inst);
-    void visitExtractValueInst(llvm::ExtractValueInst &EVI);
-    void visitInsertValueInst(llvm::InsertValueInst &IVI) {
+    virtual void visitCallSite(llvm::CallSite cs);
+    virtual void visitReturnInst(llvm::ReturnInst &I);
+    virtual void visitCastInst(llvm::CastInst &I);
+    virtual void visitSelectInst(llvm::SelectInst &I);
+    virtual void visitIntToPtrInst(llvm::IntToPtrInst &inst);
+    virtual void visitExtractValueInst(llvm::ExtractValueInst &EVI);
+    virtual void visitInsertValueInst(llvm::InsertValueInst &IVI) {
     }
     // Terminators
-    void visitTerminatorInst(llvm::TerminatorInst &TI) {
+    virtual void visitTerminatorInst(llvm::TerminatorInst &TI) {
     }
-    void visitBinaryOperator(llvm::BinaryOperator &I) {
+    virtual void visitBinaryOperator(llvm::BinaryOperator &I) {
     }
-    void visitCmpInst(llvm::CmpInst &I) {
+    virtual void visitCmpInst(llvm::CmpInst &I) {
     }
 
     /// TODO: do we need to care about these corner cases?
-    void visitPtrToIntInst(llvm::PtrToIntInst &inst) {
+    virtual void visitPtrToIntInst(llvm::PtrToIntInst &inst) {
     }
-    void visitVAArgInst(llvm::VAArgInst &I) {
+    virtual void visitVAArgInst(llvm::VAArgInst &I) {
     }
-    void visitExtractElementInst(llvm::ExtractElementInst &I);
+    virtual void visitExtractElementInst(llvm::ExtractElementInst &I);
 
-    void visitInsertElementInst(llvm::InsertElementInst &I) {
+    virtual void visitInsertElementInst(llvm::InsertElementInst &I) {
     }
-    void visitShuffleVectorInst(llvm::ShuffleVectorInst &I) {
+    virtual void visitShuffleVectorInst(llvm::ShuffleVectorInst &I) {
     }
-    void visitLandingPadInst(llvm::LandingPadInst &I) {
+    virtual void visitLandingPadInst(llvm::LandingPadInst &I) {
     }
 
     /// Instruction not that often
-    void visitResumeInst(llvm::TerminatorInst &I) { /*returns void*/
+    virtual void visitResumeInst(llvm::TerminatorInst &I) { /*returns void*/
     }
-    void visitUnwindInst(llvm::TerminatorInst &I) { /*returns void*/
+    virtual void visitUnwindInst(llvm::TerminatorInst &I) { /*returns void*/
     }
-    void visitUnreachableInst(llvm::TerminatorInst &I) { /*returns void*/
+    virtual void visitUnreachableInst(llvm::TerminatorInst &I) { /*returns void*/
     }
-    void visitFenceInst(llvm::FenceInst &I) { /*returns void*/
+    virtual void visitFenceInst(llvm::FenceInst &I) { /*returns void*/
     }
-    void visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &I) {
+    virtual void visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &I) {
     }
-    void visitAtomicRMWInst(llvm::AtomicRMWInst &I) {
+    virtual void visitAtomicRMWInst(llvm::AtomicRMWInst &I) {
     }
 
     /// Provide base case for our instruction visit.
