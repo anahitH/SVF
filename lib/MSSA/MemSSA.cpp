@@ -42,6 +42,14 @@
 using namespace llvm;
 using namespace analysisUtil;
 
+namespace llvm {
+
+template class DominanceFrontierBase<BasicBlock, false>;
+template class DominanceFrontierBase<BasicBlock, true>;
+template class ForwardDominanceFrontierBase<BasicBlock>;
+
+} // end namespace llvm
+
 
 static cl::opt<bool> DumpMSSA("dump-mssa", cl::init(false),
                               cl::desc("Dump memory SSA"));

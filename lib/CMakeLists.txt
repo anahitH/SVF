@@ -1,9 +1,11 @@
+cmake_minimum_required(VERSION 3.12)
+project(Svf VERSION 0.1.0 LANGUAGES CXX)
 add_subdirectory(CUDD)
 
 # Due to a mutual dependencies, all the sub projects of the SVG are merged here
 # Otherwise it is impossible to load the dependencies in opt
 # NOTE: if the SVF should be linked into opt, we should probably use the individual sub projects here, rather than the combined project 
-set(SOURCES
+set(SVF_SOURCES
     Util/AnalysisUtil.cpp
     Util/CPPUtil.cpp
     Util/DataFlowUtil.cpp
@@ -51,19 +53,52 @@ set(SOURCES
     WPA/TypeAnalysis.cpp
     WPA/WPAPass.cpp)
 
-add_llvm_loadable_module(Svf ${SOURCES})
-add_llvm_Library(LLVMSvf ${SOURCES})
+add_llvm_loadable_module(Svf ${SVF_SOURCES})
+target_include_directories(Svf PUBLIC
+                           $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+                           $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../include>
+                           $<INSTALL_INTERFACE:include>
+                           PRIVATE
+                           ${LLVM_INCLUDE_DIRS}
+)
 
-link_directories( ${CMAKE_BINARY_DIR}/lib/Cudd )
 llvm_map_components_to_libnames(llvm_libs bitwriter core ipo irreader instcombine instrumentation target linker analysis scalaropts support )
-target_link_libraries(LLVMSvf ${llvm_libs})
+#target_link_libraries(Svf PRIVATE svf::Cudd)
+# TODO: this may lead to multiple linkage of llvm libs. is so, remove
 if ( CMAKE_SYSTEM_NAME MATCHES "Darwin")
-    target_link_libraries(Svf LLVMCudd ${llvm_libs})
+    target_link_libraries(Svf PRIVATE ${llvm_libs})
 else()
-    target_link_libraries(Svf ${llvm_libs})
+    target_link_libraries(Svf PRIVATE ${llvm_libs})
 endif()
 
 if(DEFINED IN_SOURCE_BUILD)
     add_dependencies(Svf intrinsics_gen)
-    add_dependencies(LLVMSvf intrinsics_gen)
 endif()
+
+target_compile_features(Svf PUBLIC cxx_range_for cxx_auto_type)
+target_compile_options(Svf PRIVATE -fno-rtti -g)
+
+if (APPLE)
+    set_target_properties(Cudd PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+endif (APPLE)
+
+install(TARGETS Svf
+        EXPORT svfSvfTargets
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        COMPONENT Svf)
+install(DIRECTORY ../include/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/SVF
+        COMPONENT Svf)
+install(
+        EXPORT svfSvfTargets
+        NAMESPACE svf::
+        DESTINATION ${INSTALL_CONFIGDIR}
+        COMPONENT Svf
+)
+export(
+        EXPORT svfSvfTargets
+        NAMESPACE svf::
+        FILE ${CMAKE_CURRENT_BINARY_DIR}/svfSvfTargets.cmake
+)
+export(PACKAGE svf)
