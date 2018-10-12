@@ -1,6 +1,3 @@
-cmake_minimum_required(VERSION 3.12)
-project(Cudd VERSION 0.1.0 LANGUAGES CXX)
-
 set(SOURCES
        cuddAddNeg.c
        cuddBddCorr.c
@@ -97,17 +94,17 @@ set(SOURCES
        restart.c
 )
 
-add_llvm_loadable_module(Cudd ${SOURCES})
-add_library(svf::Cudd ALIAS Cudd)
+#add_llvm_loadable_module(Cudd ${SOURCES})
+add_llvm_library(Cudd ${SOURCES})
 target_include_directories(Cudd PUBLIC
-                           $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-                           $<INSTALL_INTERFACE:include>
+                           $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../include>
+                           $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../../include>
+                           $<INSTALL_INTERFACE:include/SVF>
                            PRIVATE
                            ${LLVM_INCLUDE_DIRS}
 )
 target_compile_features(Cudd PUBLIC cxx_range_for cxx_auto_type)
-target_compile_options(Cudd PRIVATE -fno-rtti -g -Wno-format -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -O3 -w -DHAVE_IEEE_754 -DSIZEOF_VOID_P=8 -DSIZEOF_LONG=8)
-set_target_properties(Cudd PROPERTIES LINKER_LANGUAGE CXX)
+target_compile_options(Cudd PRIVATE -fPIC -g -Wno-format -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -O3 -w -DHAVE_IEEE_754 -DSIZEOF_VOID_P=8 -DSIZEOF_LONG=8)
 if(DEFINED IN_SOURCE_BUILD)
     add_dependencies(Cudd intrinsics_gen)
 endif()
@@ -115,12 +112,13 @@ if (APPLE)
     set_target_properties(Cudd PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 endif (APPLE)
 
+add_library(svf::Cudd ALIAS Cudd)
 install(TARGETS Cudd
         EXPORT svfCuddTargets
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         COMPONENT Cudd)
-install(DIRECTORY ../../include/
+install(DIRECTORY ../../include/CUDD
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/SVF/CUDD
         COMPONENT Cudd)
 install(
@@ -134,3 +132,5 @@ export(
         NAMESPACE svf::
         FILE ${CMAKE_CURRENT_BINARY_DIR}/svfCuddTargets.cmake
 )
+export(PACKAGE Cudd)
+
