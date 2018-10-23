@@ -149,42 +149,56 @@ public:
     }
     // Terminators
     virtual void visitTerminatorInst(llvm::TerminatorInst &TI) {
+        visitInstruction(TI);
     }
     virtual void visitBinaryOperator(llvm::BinaryOperator &I) {
+        visitInstruction(I);
     }
     virtual void visitCmpInst(llvm::CmpInst &I) {
+        visitInstruction(I);
     }
 
     /// TODO: do we need to care about these corner cases?
     virtual void visitPtrToIntInst(llvm::PtrToIntInst &inst) {
+        visitInstruction(inst);
     }
     virtual void visitVAArgInst(llvm::VAArgInst &I) {
+        visitInstruction(I);
     }
     virtual void visitExtractElementInst(llvm::ExtractElementInst &I);
 
     virtual void visitInsertElementInst(llvm::InsertElementInst &I) {
+        visitInstruction(I);
     }
     virtual void visitShuffleVectorInst(llvm::ShuffleVectorInst &I) {
+        visitInstruction(I);
     }
     virtual void visitLandingPadInst(llvm::LandingPadInst &I) {
+        visitInstruction(I);
     }
 
     /// Instruction not that often
     virtual void visitResumeInst(llvm::TerminatorInst &I) { /*returns void*/
+        visitInstruction(I);
     }
     virtual void visitUnwindInst(llvm::TerminatorInst &I) { /*returns void*/
+        visitInstruction(I);
     }
     virtual void visitUnreachableInst(llvm::TerminatorInst &I) { /*returns void*/
+        visitInstruction(I);
     }
     virtual void visitFenceInst(llvm::FenceInst &I) { /*returns void*/
+        visitInstruction(I);
     }
     virtual void visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &I) {
+        visitInstruction(I);
     }
     virtual void visitAtomicRMWInst(llvm::AtomicRMWInst &I) {
+        visitInstruction(I);
     }
 
     /// Provide base case for our instruction visit.
-    inline void visitInstruction(llvm::Instruction &I) {
+    virtual inline void visitInstruction(llvm::Instruction &I) {
         // If a new instruction is added to LLVM that we don't handle.
         // TODO: ignore here:
     }

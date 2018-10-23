@@ -516,5 +516,24 @@ void PDGBuilder::visitExtractValueInst(llvm::ExtractValueInst &I)
     pag->addBlackHoleAddrEdge(dst);
 }
 
+void PDGBuilder::visitInstruction(llvm::Instruction &I)
+{
+    //NodeID dst = getValueNode(&I);
+    //for (auto op_it = I.op_begin(); op_it != I.op_end(); ++op_it) {
+    //    llvm::Value* op_value = llvm::dyn_cast<llvm::Value>(*op_it);
+    //    if (!op_value) {
+    //        continue;
+    //    }
+    //    if (llvm::dyn_cast<llvm::BasicBlock>(op_value)) {
+    //        continue;
+    //    }
+    //    if (llvm::dyn_cast<llvm::Constant>(op_value)) {
+    //        continue;
+    //    }
+    //    NodeID src = getValueNode(op_value);
+    //    pag->addCopyEdge(src, dst);
+    //}
+}
+
 } // namespace pdg
 

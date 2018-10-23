@@ -187,6 +187,9 @@ public:
     inline const SVFGNode* getDefSVFGNode(const PAGNode* pagNode) const {
         return getSVFGNode(getDef(pagNode));
     }
+    inline bool hasDef(const PAGNode* pagNode) const {
+        return (PAGNodeToDefMap.find(pagNode) != PAGNodeToDefMap.end());
+    }
 
     /// Given a store pagEdge, return its SVFGNode
     inline const SVFGNode* getStoreSVFGNode(const StorePE* store) const {
@@ -414,9 +417,6 @@ protected:
         PAGNodeToDefMapTy::const_iterator it = PAGNodeToDefMap.find(pagNode);
         assert(it!=PAGNodeToDefMap.end() && "PAG node does not have a definition??");
         return it->second;
-    }
-    inline bool hasDef(const PAGNode* pagNode) const {
-        return (PAGNodeToDefMap.find(pagNode) != PAGNodeToDefMap.end());
     }
     //@}
 

@@ -934,10 +934,7 @@ struct DOTGraphTraits<SVFG*> : public DOTGraphTraits<PAG*> {
     }
 
     std::string getNodeLabel(NodeType *node, SVFG *graph) {
-        if (isSimple())
-            return getSimpleNodeLabel(node, graph);
-        else
-            return getCompleteNodeLabel(node, graph);
+        return getCompleteNodeLabel(node, graph);
     }
 
     /// Return label of a VFG node without MemSSA information
@@ -1014,7 +1011,14 @@ struct DOTGraphTraits<SVFG*> : public DOTGraphTraits<PAG*> {
 
         std::string str;
         raw_string_ostream rawstr(str);
+        PAG* pag = PAG::getPAG();
         rawstr << "NodeID: " << node->getId() << "\n";
+        if (pag->hasGNode(node->getId())) {
+            auto* pag_node = pag->getGNode(node->getId());
+            if (pag_node->hasValue()) {
+                rawstr << *pag_node->getValue() << "\n";
+            }
+        }
         if(StmtSVFGNode* stmtNode = dyn_cast<StmtSVFGNode>(node)) {
             NodeID src = stmtNode->getPAGSrcNodeID();
             NodeID dst = stmtNode->getPAGDstNodeID();

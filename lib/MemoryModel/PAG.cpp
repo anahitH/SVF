@@ -696,6 +696,9 @@ struct DOTGraphTraits<PAG*> : public DefaultDOTGraphTraits {
             if (isa<ValPN>(node)) {
                 if (nameDisplay)
                     rawstr << node->getId() << ":" << node->getValueName();
+                    if (node->hasValue()) {
+                        rawstr << *node->getValue();
+                    }
                 else
                     rawstr << node->getId();
             } else

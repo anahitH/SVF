@@ -68,7 +68,48 @@ public:
     /// Overloading operator << for dumping SVFG node ID
     //@{
     friend llvm::raw_ostream& operator<< (llvm::raw_ostream &o, const SVFGNode &node) {
-        o << "SVFGNode ID:" << node.getId();
+        o << "SVFGNode ID:" << node.getId() << "  Node Kind: ";
+        if (node.getNodeKind() == Addr) {
+            o << "Addr\n";
+        } else if (node.getNodeKind() == Copy) {
+            o << "Copy\n";
+        } else if (node.getNodeKind() == Gep) {
+            o << "Gep\n";
+        } else if (node.getNodeKind() == Store) {
+            o << "Store\n";
+        } else if (node.getNodeKind() == Load) {
+            o << "Load\n";
+        } else if (node.getNodeKind() == TPhi) {
+            o << "TPhi\n";
+        } else if (node.getNodeKind() == TInterPhi) {
+            o << "TInterPhi\n";
+        } else if (node.getNodeKind() == TIntraPhi) {
+            o << "TIntraPhi\n";
+        } else if (node.getNodeKind() == MPhi) {
+            o << "MPhi\n";
+        } else if (node.getNodeKind() == MIntraPhi) {
+            o << "MIntraPhi\n";
+        } else if (node.getNodeKind() == MInterPhi) {
+            o << "MInterPhi\n";
+        } else if (node.getNodeKind() == FRet) {
+            o << "FRet\n";
+        } else if (node.getNodeKind() == ARet) {
+            o << "ARet\n";
+        } else if (node.getNodeKind() == AParm) {
+            o << "AParm\n";
+        } else if (node.getNodeKind() == APIN) {
+            o << "APIN\n";
+        } else if (node.getNodeKind() == APOUT) {
+            o << "APOUT\n";
+        } else if (node.getNodeKind() == FParm) {
+            o << "FParm\n";
+        } else if (node.getNodeKind() == FPIN) {
+            o << "FPIN\n";
+        } else if (node.getNodeKind() == FPOUT) {
+            o << "FPOUT\n";
+        } else if (node.getNodeKind() == NPtr) {
+            o << "NPtr\n";
+        }
         return o;
     }
     //@}

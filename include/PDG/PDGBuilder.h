@@ -44,7 +44,7 @@ public:
     void visitCastInst(llvm::CastInst &I) override;
     void visitReturnInst(llvm::ReturnInst &I) override;
     void visitExtractValueInst(llvm::ExtractValueInst &EVI) override;
-
+    virtual void visitInstruction(llvm::Instruction &I) override;
 }; //class PDGBuilder
 
 } // namespace pdg

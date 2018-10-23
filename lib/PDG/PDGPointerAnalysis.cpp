@@ -1,6 +1,7 @@
 #include "PDG/PDGPointerAnalysis.h"
 
 #include "MemoryModel/PAGBuilder.h"
+#include "PDG/PDGBuilder.h"
 
 #include "SVF/Util/SVFModule.h"
 #include "SVF/MemoryModel/CHA.h"
@@ -14,7 +15,7 @@ void PDGAndersenWaveDiff::initialize(SVFModule svfModule)
 
     SymbolTableInfo* symTable = SymbolTableInfo::Symbolnfo();
     symTable->buildMemModel(svfModule);
-    PAGBuilder pdgBuilder;
+    pdg::PDGBuilder pdgBuilder;
     pag = pdgBuilder.build(svfModule);
     chgraph = new CHGraph(svfModule);
     chgraph->buildCHG();
