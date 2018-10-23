@@ -12,7 +12,7 @@
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/Debug.h"
 
-namespace pdg {
+namespace svfg {
 
 void PDGBuilder::processCE(const llvm::Value *val)
 {

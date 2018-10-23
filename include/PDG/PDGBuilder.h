@@ -20,7 +20,7 @@ namespace llvm {
     class User;
 }
 
-namespace pdg {
+namespace svfg {
 
 /**
  * \class PDGBuilder

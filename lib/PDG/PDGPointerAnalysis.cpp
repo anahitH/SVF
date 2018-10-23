@@ -7,7 +7,7 @@
 #include "SVF/MemoryModel/CHA.h"
 #include "SVF/MemoryModel/PTAType.h"
 
-namespace pdg {
+namespace svfg {
 
 void PDGAndersenWaveDiff::initialize(SVFModule svfModule)
 {
@@ -15,7 +15,7 @@ void PDGAndersenWaveDiff::initialize(SVFModule svfModule)
 
     SymbolTableInfo* symTable = SymbolTableInfo::Symbolnfo();
     symTable->buildMemModel(svfModule);
-    pdg::PDGBuilder pdgBuilder;
+    PDGBuilder pdgBuilder;
     pag = pdgBuilder.build(svfModule);
     chgraph = new CHGraph(svfModule);
     chgraph->buildCHG();

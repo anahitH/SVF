@@ -3,7 +3,7 @@
 #include "MemoryModel/PointerAnalysis.h"
 #include "WPA/Andersen.h"
 
-namespace pdg {
+namespace svfg {
 
 class PDGAndersenWaveDiff : public AndersenWaveDiff
 {
