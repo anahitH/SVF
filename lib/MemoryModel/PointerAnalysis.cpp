@@ -77,7 +77,7 @@ static cl::opt<bool> UsePreCompFieldSensitive("preFieldSensitive", cl::init(true
 static cl::opt<bool> EnableAliasCheck("alias-check", cl::init(true),
                                       cl::desc("Enable alias check functions"));
 
-static cl::opt<bool> EnableThreadCallGraph("enable-tcg", cl::init(true),
+cl::opt<bool> EnableThreadCallGraph("enable-tcg", cl::init(true),
         cl::desc("Enable pointer analysis to use thread call graph"));
 
 static cl::opt<bool> INCDFPTData("incdata", cl::init(true),

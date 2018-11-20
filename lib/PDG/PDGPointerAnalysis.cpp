@@ -3,6 +3,7 @@
 #include "MemoryModel/PAGBuilder.h"
 #include "PDG/PDGBuilder.h"
 
+#include "Util/ThreadCallGraph.h"
 #include "SVF/Util/SVFModule.h"
 #include "SVF/MemoryModel/CHA.h"
 #include "SVF/MemoryModel/PTAType.h"
@@ -20,8 +21,14 @@ void PDGAndersenWaveDiff::initialize(SVFModule svfModule)
     chgraph = new CHGraph(svfModule);
     chgraph->buildCHG();
     typeSystem = new TypeSystem(pag);
-    ptaCallGraph = new PTACallGraph(svfModule);
+    /// initialise pta call graph for every pointer analysis instance
+    if(EnableThreadCallGraph)
+        ptaCallGraph = new ThreadCallGraph(svfModule);
+    else
+        ptaCallGraph = new PTACallGraph(svfModule);
+
     callGraphSCCDetection();
+
     svfMod = svfModule;
 
     consCG = new ConstraintGraph(pag);

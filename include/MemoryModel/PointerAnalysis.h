@@ -36,6 +36,7 @@
 #include "Util/PTACallGraph.h"
 #include "Util/SCC.h"
 #include "Util/PathCondAllocator.h"
+#include "llvm/Support/CommandLine.h"
 #include "MemoryModel/PointsToDFDS.h"
 
 #include <llvm/Analysis/AliasAnalysis.h>
@@ -48,6 +49,8 @@ class TypeSystem;
 class SVFModule;
 
 class PTAStat;
+
+extern llvm::cl::opt<bool> EnableThreadCallGraph;
 /*
  * Pointer Analysis Base Class
  */
