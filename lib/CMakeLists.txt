@@ -54,8 +54,8 @@ set(SVF_SOURCES
     PDG/PDGPointerAnalysis.cpp
     )
 
-add_llvm_loadable_module(Svf ${SVF_SOURCES})
-#add_llvm_library(Svf ${SVF_SOURCES})
+#add_llvm_loadable_module(Svf ${SVF_SOURCES})
+add_llvm_library(Svf MODULE ${SVF_SOURCES})
 target_include_directories(Svf PUBLIC
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../include>
