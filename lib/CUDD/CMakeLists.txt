@@ -102,6 +102,7 @@ target_include_directories(Cudd PUBLIC
                            $<INSTALL_INTERFACE:include/SVF>
                            PRIVATE
                            ${LLVM_INCLUDE_DIRS}
+			   ${CMAKE_CURRENT_SOURCE_DIR}/../../include
 )
 target_compile_features(Cudd PUBLIC cxx_range_for cxx_auto_type)
 target_compile_options(Cudd PRIVATE -fPIC -g -Wno-format -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -O3 -w -DHAVE_IEEE_754 -DSIZEOF_VOID_P=8 -DSIZEOF_LONG=8)

@@ -4,9 +4,14 @@
 #include "PDG/PDGBuilder.h"
 
 #include "Util/ThreadCallGraph.h"
-#include "SVF/Util/SVFModule.h"
-#include "SVF/MemoryModel/CHA.h"
-#include "SVF/MemoryModel/PTAType.h"
+#include "Util/SVFModule.h"
+#include "MemoryModel/CHA.h"
+#include "MemoryModel/PTAType.h"
+
+
+//#include "SVF/Util/SVFModule.h"
+//#include "SVF/MemoryModel/CHA.h"
+//#include "SVF/MemoryModel/PTAType.h"
 
 namespace svfg {
 

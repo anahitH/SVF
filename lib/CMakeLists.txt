@@ -54,14 +54,15 @@ set(SVF_SOURCES
     PDG/PDGPointerAnalysis.cpp
     )
 
-#add_llvm_loadable_module(Svf ${SVF_SOURCES})
-add_llvm_library(Svf MODULE ${SVF_SOURCES})
+add_llvm_loadable_module(Svf ${SVF_SOURCES})
+#add_llvm_library(Svf MODULE ${SVF_SOURCES})
 target_include_directories(Svf PUBLIC
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../include>
                            $<INSTALL_INTERFACE:include/SVF/>
                            PRIVATE
                            ${LLVM_INCLUDE_DIRS}
+                           ${CMAKE_CURRENT_BINARY_DIR}/../include
 )
 
 llvm_map_components_to_libnames(llvm_libs bitwriter core ipo irreader instcombine instrumentation target linker analysis scalaropts support )
